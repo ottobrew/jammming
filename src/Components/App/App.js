@@ -74,10 +74,9 @@ class App extends Component {
     /* #63.
     Generates an array of uri values called trackURIs from
     the playlistTracks property. */
-    let trackURIs = this.playlistTracks.map(track => track.uri);
-    Spotify.savePlaylist(this.state.playlistName, trackURIs).then(() => {
-      this.resetPlaylist();
-    });
+    let trackURIs = [];
+    this.state.playlistTracks.map(track => track.uri);
+    Spotify.savePlaylist(this.state.playlistName, trackURIs)
   }
 
   render() {
@@ -85,12 +84,12 @@ class App extends Component {
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App">
-          <SearchBar onSearch={this.state.search}/>
+          <SearchBar onSearch={this.search}/>
         <div className="App-playlist">
-          <SearchResults searchResults={this.state.searchResults} onAdd={this.state.addTrack}/>
+          <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack}/>
           <Playlist playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks}
-          onRemove={this.state.removeTrack} onNameChange={this.state.updatePlaylistName}
-          onSave={this.state.savePlaylist}/>
+          onRemove={this.removeTrack} onNameChange={this.updatePlaylistName}
+          onSave={this.savePlaylist}/>
         </div>
         </div>
       </div>
