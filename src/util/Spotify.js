@@ -34,9 +34,9 @@ const Spotify = {
       headers: {Authorization: `Bearer ${accessToken}`} }).then(response => {
         if (response.ok) {
         return response.json();
-      } else {
+      }
         throw new Error ('Request failed!');
-      }}, networkError => {
+      }, networkError => {
         console.log(networkError.message);
       }).then(jsonResponse => {
 
@@ -62,7 +62,7 @@ referencing the current user's account (ID) and the new playlist (ID) */
 
   savePlaylist(playlistName, trackURIs) {
     /*#90.*/
-    if (!playlistName || !trackURIs.length) {
+    if (!playlistName || trackURIs.length === 0) {
       console.log('No tracks to save.')
       return;
     }
@@ -71,6 +71,7 @@ referencing the current user's account (ID) and the new playlist (ID) */
     const headers = {Authorization: `Bearer ${accessToken}`};
     let userId;
 
+    /*GET request */
     return fetch(`https://api.spotify.com/v1/me`, {headers: headers}).then(response => {
       if (response.ok) {
       return response.json();
@@ -80,27 +81,27 @@ referencing the current user's account (ID) and the new playlist (ID) */
       console.log(networkError.message);
     }).then(jsonResponse => {
       userId = jsonResponse.id;
+      /*POST request*/
       return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
         headers: headers,
         method: 'POST',
-        body: JSON.stringify(playlistName)
+        body: JSON.stringify({name: playlistName})
       }).then(response => (response.json()
     ).then(jsonResponse => {
       let playlistID = jsonResponse.id;
       //console.log(`Playlist ID ${playlistID}`)
       //console.log(`Tracks URI ${trackURIs}`)
+
+      /*POST request*/
       fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistID}/tracks`, {
         headers: headers,
         method: 'POST',
-        body: JSON.stringify(trackURIs)
-      }).then(response => (response.json()
-    ).then(jsonResponse => {
-      let playlistID = jsonResponse.id;
+        body: JSON.stringify({uris: trackURIs})
+      })
     }));
-    }))
-    });
-  }
-};
+    })
+    }
+  };
 
 
 

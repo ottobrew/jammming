@@ -35,15 +35,17 @@ class App extends Component {
   }
 
   addTrack(track) {
-    /* #41. Not sure about this method - logic below from hint*/
+    /* #41.*/
+    let newPlaylistTracks = this.state.playlistTracks;
+
     if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
       console.log('Track already in Playlist');
       return;
+    } else {
+      newPlaylistTracks.push(track);
+      console.log(`${track.name} added!`);
+      this.setState({playlistTracks: newPlaylistTracks});
     }
-    let newPlaylistTracks = this.state.playlistTracks;
-    newPlaylistTracks.push(track);
-    this.setState({playlistTracks: newPlaylistTracks});
-
   }
 
   removeTrack(track) {
@@ -57,9 +59,7 @@ class App extends Component {
 
 
   updatePlaylistName(newName) {
-    this.setState ({
-      playlistName: newName
-    });
+    this.setState ({playlistName: newName});
     console.log(this.state.playlistName)
   }
 
@@ -75,9 +75,10 @@ class App extends Component {
     Generates an array of uri values called trackURIs from
     the playlistTracks property. */
     let trackURIs = [];
-    this.state.playlistTracks.map(track => track.uri);
-    Spotify.savePlaylist(this.state.playlistName, trackURIs)
-  }
+    this.state.playlistTracks.map(track =>
+      track.uri);
+    Spotify.savePlaylist(this.state.playlistName, trackURIs);
+    }
 
   render() {
     return (
