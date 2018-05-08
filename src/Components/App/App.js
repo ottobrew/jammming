@@ -19,6 +19,7 @@ class App extends Component {
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    this.resetPlaylist = this.resetPlaylist.bind(this);
   }
 
   search(searchTerm) {
@@ -75,10 +76,12 @@ class App extends Component {
     Generates an array of uri values called trackURIs from
     the playlistTracks property. */
     let trackURIs = [];
-    this.state.playlistTracks.map(track =>
+    trackURIs = this.state.playlistTracks.map(track =>
       track.uri);
-    Spotify.savePlaylist(this.state.playlistName, trackURIs);
-    }
+    Spotify.savePlaylist(this.state.playlistName, trackURIs).then(() => {
+    this.resetPlaylist();
+    });
+  }
 
   render() {
     return (
